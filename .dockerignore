@@ -1,0 +1,9 @@
+.env
+.envrc
+.gitignore
+.git
+Dockerfile
+**/README.md
+**/lib
+**/node_modules
+**/dist
