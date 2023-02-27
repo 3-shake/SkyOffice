@@ -67,7 +67,8 @@ export default class Network {
 
   // method to join the public lobby
   async joinOrCreatePublic() {
-    this.room = await this.client.joinOrCreate(RoomType.PUBLIC)
+    const roomId = 'public'
+    this.room = await this.client.joinById(roomId, {})
     this.initialize()
   }
 

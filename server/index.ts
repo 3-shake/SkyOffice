@@ -1,7 +1,8 @@
 import http from 'http'
 import express from 'express'
 import cors from 'cors'
-import { Server, LobbyRoom } from 'colyseus'
+import { Server, LobbyRoom, RedisPresence } from 'colyseus'
+import { MongooseDriver } from '@colyseus/mongoose-driver'
 import { monitor } from '@colyseus/monitor'
 import { RoomType } from '../types/Rooms'
 
@@ -19,6 +20,11 @@ app.use(express.static('dist'))
 const server = http.createServer(app)
 const gameServer = new Server({
   server,
+  presence: new RedisPresence({
+    host: process.env.REDIS_HOST,
+    port: parseInt(process.env.REDIS_PORT || '6379'),
+  }),
+  driver: new MongooseDriver(process.env.MONGO_URL),
 })
 
 // register room handlers

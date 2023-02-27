@@ -1,0 +1,55 @@
+version: "3.9"
+services:
+  webapp:
+    build:
+      dockerfile: ./Dockerfile
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PORT=8081
+      - MONGO_URL=mongodb://root:example@mongo:27017/app
+    expose:
+      - "8081"
+    depends_on:
+      - "redis"
+      - "mongo"
+  webapp2:
+    build:
+      dockerfile: ./Dockerfile
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PORT=8082
+      - MONGO_URL=mongodb://root:example@mongo:27017/app
+    expose:
+      - "8082"
+    depends_on:
+      - "redis"
+      - "mongo"
+  proxy:
+    build:
+      dockerfile: ./Dockerfile.router
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - PORT=8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "webapp1"
+      - "webapp2"
+      - "redis"
+  redis:
+    image: "redis:7.0.8"
+    expose:
+      - "6379"
+    volumes:
+      - "./data/redis:/data"
+  mongo:
+    image: "mongo:latest"
+    expose:
+      - "27017"
+    user: "mongodb:mongodb"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: app
