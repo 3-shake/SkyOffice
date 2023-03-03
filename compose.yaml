@@ -1,13 +1,13 @@
 version: "3.9"
 services:
-  webapp:
+  webapp1:
     build:
       dockerfile: ./Dockerfile
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - PORT=8081
-      - MONGO_URL=mongodb://root:example@mongo:27017/app
+      - MONGO_URL=mongodb://root:example@mongo:27017/
     expose:
       - "8081"
     depends_on:
@@ -20,7 +20,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - PORT=8082
-      - MONGO_URL=mongodb://root:example@mongo:27017/app
+      - MONGO_URL=mongodb://root:example@mongo:27017/
     expose:
       - "8082"
     depends_on:
